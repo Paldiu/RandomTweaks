@@ -29,7 +29,7 @@ public class Reflector {
     }
 
     /**
-     * A basic reflection
+     * A basic reflection getter
      * @return A reflective interface
       */
     public Reflections reflect() {
