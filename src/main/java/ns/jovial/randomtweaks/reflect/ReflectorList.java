@@ -2,7 +2,6 @@ package ns.jovial.randomtweaks.reflect;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 
 public class ReflectorList<E> {
     private int size = 0;

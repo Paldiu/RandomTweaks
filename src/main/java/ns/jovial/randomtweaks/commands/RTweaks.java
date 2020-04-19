@@ -3,6 +3,7 @@ package ns.jovial.randomtweaks.commands;
 import ns.jovial.randomtweaks.RandomTweaks;
 import ns.jovial.randomtweaks.commands.handling.CommandBase;
 import ns.jovial.randomtweaks.commands.handling.CommandParameters;
+import ns.jovial.randomtweaks.listener.WorldListener;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -39,10 +40,39 @@ public class RTweaks extends CommandBase {
                 case "world":
                     switch (args[1]) {
                         case "on":
+                            if (RandomTweaks.wl.isEnabled()) {
+                                sender.sendMessage("That is already enabled!");
+                                return true;
+                            }
+                            RandomTweaks.wl.setEnabled(true);
                            break;
                         case "off":
+                            if (RandomTweaks.wl.isEnabled()) {
+                                sender.sendMessage("That is already disabled!");
+                                return true;
+                            }
+                            RandomTweaks.wl.setEnabled(false);
                             break;
                     }
+                    break;
+                case "player":
+                    switch (args[1]) {
+                        case "on":
+                            if (RandomTweaks.pl.isEnabled()) {
+                                sender.sendMessage("That is already enabled!");
+                                return true;
+                            }
+                            RandomTweaks.pl.setEnabled(true);
+                            break;
+                        case "off":
+                            if (!RandomTweaks.pl.isEnabled()) {
+                                sender.sendMessage("That is already disabled!");
+                                return true;
+                            }
+                            RandomTweaks.pl.setEnabled(false);
+                            break;
+                    }
+                    break;
             }
         } else {
             return false;

@@ -4,10 +4,8 @@ import ns.jovial.randomtweaks.RandomTweaks;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 public abstract class CommandBase {

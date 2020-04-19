@@ -20,7 +20,18 @@ public class WorldListener implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    public static boolean enabled = false;
+    // Private boolean
+    private boolean enabled = false;
+
+    // Setter
+    public void setEnabled(boolean enable) {
+        enabled = enable;
+    }
+
+    // Getter
+    public boolean isEnabled() {
+        return enabled;
+    }
 
     @EventHandler
     public void SheepEvent(SheepRegrowWoolEvent event) {

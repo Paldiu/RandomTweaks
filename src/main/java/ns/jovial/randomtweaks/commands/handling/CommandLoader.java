@@ -1,6 +1,8 @@
 package ns.jovial.randomtweaks.commands.handling;
 
 import ns.jovial.randomtweaks.RandomTweaks;
+import ns.jovial.randomtweaks.reflect.ReflectorList;
+import ns.jovial.randomtweaks.reflect.ReflectorMap;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 
@@ -13,6 +15,7 @@ public class CommandLoader {
         commandList = new ArrayList<>();
     }
 
+    @SuppressWarnings("unchecked")
     public void scan() {
         CommandMap map = getCommandMap();
         if (map == null) {
@@ -20,7 +23,7 @@ public class CommandLoader {
             return;
         }
         commandList.clear();
-        commandList.addAll(getCommands());
+        commandList.addAll((Collection<? extends Commander>) getCommands());
 
         commandList.stream().forEach(command -> {
            Dynamic dynamic = new Dynamic(command);
@@ -46,7 +49,7 @@ public class CommandLoader {
     public void unregisterCommand(Command command, CommandMap commandMap) {
         try {
             command.unregister(commandMap);
-            HashMap<String, Command> knownCommands= getKnownCommands(commandMap);
+            ReflectorMap<String, Command> knownCommands = getKnownCommands(commandMap);
             if (knownCommands != null) {
                 knownCommands.remove(command.getName());
                 command.getAliases().forEach(knownCommands::remove);
@@ -57,7 +60,7 @@ public class CommandLoader {
     }
 
     public CommandMap getCommandMap() {
-        Object commandMap = RandomTweaks.reflector.getField(Bukkit.getServer().getPluginManager(), "commandMap");
+        Object commandMap = RandomTweaks.reflect.getField(Bukkit.getServer().getPluginManager(), "commandMap");
         if (commandMap != null) {
             if (commandMap instanceof CommandMap) {
                 return (CommandMap) commandMap;
@@ -66,9 +69,9 @@ public class CommandLoader {
         return null;
     }
 
-    private Collection<? extends Commander> getCommands() {
-        List<Commander> commanderList = new ArrayList<>();
-        RandomTweaks.reflector.getAnnotatedClasses(CommandParameters.class).forEach(clazz -> {
+    private ReflectorList<? extends Commander> getCommands() {
+        ReflectorList<Commander> commanderList = new ReflectorList<>();
+        RandomTweaks.reflect.getAnnotatedClasses(CommandParameters.class).forEach(clazz -> {
             CommandParameters cp = clazz.getAnnotation(CommandParameters.class);
             if (cp != null) {
                 Commander commander = new Commander(
@@ -80,15 +83,15 @@ public class CommandLoader {
                 commanderList.add(commander);
             }
         });
-        return Collections.unmodifiableCollection(commanderList);
+        return commanderList;
     }
 
     @SuppressWarnings("unchecked")
-    public HashMap<String, Command> getKnownCommands(CommandMap commandMap) {
-        Object knownCommands = RandomTweaks.reflector.getField(commandMap, "knownCommands");
+    public ReflectorMap<String, Command> getKnownCommands(CommandMap commandMap) {
+        Object knownCommands = RandomTweaks.reflect.getField(commandMap, "knownCommands");
         if (knownCommands != null) {
             if (knownCommands instanceof HashMap) {
-                return (HashMap<String, Command>) knownCommands;
+                return (ReflectorMap<String, Command>) knownCommands;
             }
         }
         return null;

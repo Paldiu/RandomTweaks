@@ -16,11 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommandHandler {
-    public static final Class<? extends CommandBase> COMMAND_PATH = RTweaks.class;
-
-    public static String getLocation(Class<?> clazz) {
-        return clazz.getPackage().getName();
-    }
+    private static final String COMMAND_PATH = RandomTweaks.reflect.getDefPackage().getName();
 
     public static boolean handle(CommandSender sender, Command cmd, String lbl, String[] args) {
         final Player player;
@@ -42,7 +38,7 @@ public class CommandHandler {
         final CommandBase base;
         try {
             final ClassLoader loader = RandomTweaks.class.getClassLoader();
-            base = (CommandBase) loader.loadClass(getLocation(COMMAND_PATH) + "." + cmd.getName()).newInstance();
+            base = (CommandBase) loader.loadClass( COMMAND_PATH + cmd.getName()).newInstance();
             base.setup(RandomTweaks.plugin, sender, base.getClass());
         } catch (Exception ex) {
             Bukkit.getLogger().severe("Could not load command: " + cmd.getName());
@@ -68,7 +64,7 @@ public class CommandHandler {
         final CommandBase base;
         try {
             final ClassLoader loader = RandomTweaks.class.getClassLoader();
-            base = (CommandBase) loader.loadClass(getLocation(COMMAND_PATH) + "." + cmd.getName()).newInstance();
+            base = (CommandBase) loader.loadClass(COMMAND_PATH + "." + cmd.getName()).newInstance();
             base.setup(RandomTweaks.plugin, sender, base.getClass());
         } catch (Exception ex) {
             return null;

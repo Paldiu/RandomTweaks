@@ -6,8 +6,6 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import org.jetbrains.annotations.NotNull;
 
-import javax.xml.soap.Text;
-
 public abstract class HoverLibrary {
 
     private HoverLibrary() {

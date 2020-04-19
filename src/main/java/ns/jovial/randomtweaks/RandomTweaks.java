@@ -6,6 +6,8 @@ import java.util.logging.Level;
 import ns.jovial.randomtweaks.commands.RTweaks;
 import ns.jovial.randomtweaks.commands.handling.CommandHandler;
 import ns.jovial.randomtweaks.commands.handling.CommandLoader;
+import ns.jovial.randomtweaks.listener.PlayerListener;
+import ns.jovial.randomtweaks.listener.WorldListener;
 import ns.jovial.randomtweaks.reflect.Reflector;
 import ns.jovial.randomtweaks.timer.RecurringTask;
 import ns.jovial.randomtweaks.timer.Timer;
@@ -23,8 +25,12 @@ public class RandomTweaks extends JavaPlugin {
     public static String pluginName;
     public static String pluginVersion;
     public static Server server;
+    //
     public static Timer timer;
-    public static Reflector reflector;
+    public static Reflector reflect;
+    //
+    public static WorldListener wl;
+    public static PlayerListener pl;
 
     @Override
     public void onLoad() {
@@ -36,12 +42,13 @@ public class RandomTweaks extends JavaPlugin {
         // Timer
         timer = new Timer();
         // Reflector
-        reflector = new Reflector(RTweaks.class);
+        reflect = new Reflector(RTweaks.class);
     }
     
     @Override
     public void onEnable() {
-
+        wl = new WorldListener(this);
+        pl = new PlayerListener(this);
 
         new RecurringTask(plugin).runTaskTimer(plugin, timer.clean(), timer.clean());
 
