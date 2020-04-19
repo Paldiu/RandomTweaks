@@ -27,6 +27,14 @@ public class Reflector {
         return reflections;
     }
 
+    public Class<?> getDefClass() {
+        return cls;
+    }
+
+    public Package getDefPackage() {
+        return aPackage;
+    }
+
     public interface ListAndMap {
         ReflectorList<?> list();
         ReflectorMap<?, ?> map();
