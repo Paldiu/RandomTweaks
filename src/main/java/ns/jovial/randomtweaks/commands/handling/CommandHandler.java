@@ -19,16 +19,14 @@ public class CommandHandler {
     private static final String COMMAND_PATH = RandomTweaks.reflect.getDefPackage().getName();
 
     public static boolean handle(CommandSender sender, Command cmd, String lbl, String[] args) {
-        final Player player;
         if (sender instanceof Player) {
-            player = (Player) sender;
+            final Player player = (Player) sender;
             Bukkit.getLogger().info(String.format("[PLAYER COMMAND] %s (%s): /%s %s",
                     player.getName(),
                     ChatColor.stripColor(player.getDisplayName()),
                     lbl,
                     StringUtils.join(args, ' ')));
         } else {
-            player = null;
             Bukkit.getLogger().info(String.format("[CONSOLE COMMAND] %s: /%s %s",
                     sender.getName(),
                     lbl,
@@ -37,7 +35,7 @@ public class CommandHandler {
 
         final CommandBase base;
         try {
-            final ClassLoader loader = RandomTweaks.class.getClassLoader();
+            final ClassLoader loader = RandomTweaks.reflect.getDefClass().getClassLoader();
             base = (CommandBase) loader.loadClass( COMMAND_PATH + cmd.getName()).newInstance();
             base.setup(RandomTweaks.plugin, sender, base.getClass());
         } catch (Exception ex) {
@@ -63,7 +61,7 @@ public class CommandHandler {
     static List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String lbl, @NotNull String[] args) {
         final CommandBase base;
         try {
-            final ClassLoader loader = RandomTweaks.class.getClassLoader();
+            final ClassLoader loader = RandomTweaks.reflect.getDefClass().getClassLoader();
             base = (CommandBase) loader.loadClass(COMMAND_PATH + "." + cmd.getName()).newInstance();
             base.setup(RandomTweaks.plugin, sender, base.getClass());
         } catch (Exception ex) {

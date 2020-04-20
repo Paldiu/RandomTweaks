@@ -9,6 +9,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -87,6 +88,25 @@ public class RTweaks extends CommandBase {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String lbl, String[] args) {
+        if (!(sender instanceof Player)) {
+            return null;
+        }
+        List<String> newList = new ArrayList<>();
+        if (args[0].startsWith("\\s") || args[0].startsWith("")) {
+            newList.add("world");
+            newList.add("player");
+            newList.add("server");
+            newList.add("entity");
+            newList.add("block");
+            return newList;
+        }
+
+        if (args[1].startsWith("\\s") || args[1].startsWith("")) {
+            newList.add("on");
+            newList.add("off");
+            return newList;
+        }
+
         return null;
     }
 }
