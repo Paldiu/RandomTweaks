@@ -1,28 +1,38 @@
 package ns.jovial.randomtweaks.reflect;
 
 import ns.jovial.randomtweaks.RandomTweaks;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 import org.reflections.Reflections;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.Set;
+import java.util.*;
 
 public class Reflector {
     private final Reflections reflections;
     private final Package aPackage;
     private final Class<?> cls;
     private final Object mutationLock;
+    private final List<Plugin> plugins;
 
     /**
      * Initializer!
-     * This constructor prepares our reflector for numerous methods.
+     * This constructor prepares our reflector for the numerous defined methods.
+     * The reflector should be limited to one single instance.
+     * This WILL run on the main server thread.
      * @param clazz -> The class in which to call the reflections from.
      */
     public Reflector(Class<?> clazz) {
-        this.cls = clazz;
+        cls = clazz;
         aPackage = cls.getPackage();
         mutationLock = new Object();
-
+        plugins = new ArrayList<>();
+        for (Plugin plug : Bukkit.getServer().getPluginManager().getPlugins()) {
+            if (plug.getDescription().getDepend().contains(RandomTweaks.pluginName)) {
+                plugins.add(plug);
+            }
+        }
         synchronized(mutationLock) {
             reflections = new Reflections(clazz.getPackage().getName());
         }
@@ -34,6 +44,32 @@ public class Reflector {
       */
     public Reflections reflect() {
         return reflections;
+    }
+
+    /**
+     * Gets the first listed dependency.
+     * @return The first listed plugin which uses this as a dependency.
+     */
+    public Plugin getFirstDepend() {
+        return plugins.get(0);
+    }
+
+    /**
+     * Gets a dependency based on its location on the list.
+     * @param index The index at which to call from the list.
+     * @return The retrieved plugin
+     * @throws IndexOutOfBoundsException if the index provided is larger or smaller than the actual size of the list.
+     */
+    public Plugin getDepend(int index) throws IndexOutOfBoundsException {
+        return plugins.get(index);
+    }
+
+    /**
+     * Gets the entire list of plugins that are currently dependent on this library.
+     * @return A list of plugins which have RandomTweaks as a dependency.
+     */
+    public List<Plugin> getPlugins() {
+        return plugins;
     }
 
     /**

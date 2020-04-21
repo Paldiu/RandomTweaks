@@ -7,8 +7,18 @@ public class ReflectorMap<K, V>{
     private Entry<K, V>[] table;
     private int capacity = 1024;
 
+    /**
+     * Constructor. Initialized in the exact same way as a regular Map.
+     */
     public ReflectorMap() { table = new Entry[capacity]; }
 
+    /**
+     * Adds a new entry to the map.
+     * K and V are both generic type parameters.
+     * These can be replaced with just about anything.
+     * @param key The object to use as a reference key for a relative stored value.
+     * @param value The value to store in reference to the object key.
+     */
     public void put(K key, V value) {
         if (key == null) return;
 
@@ -37,6 +47,11 @@ public class ReflectorMap<K, V>{
         }
     }
 
+    /**
+     * Gets the stored value relative to the Object key.
+     * @param key The object key to reference for the stored value
+     * @return The value stored.
+     */
     public V get(K key) {
         int hash = hash(key);
         if (table[hash] != null) {
@@ -49,6 +64,11 @@ public class ReflectorMap<K, V>{
         return null;
     }
 
+    /**
+     * Removes the specified Key and it's relative Value.
+     * @param key The key to remove.
+     * @return true if the key has been removed, false if the key was null (never existed to begin with).
+     */
     public boolean remove(K key) {
         int hash = hash(key);
         if (table[hash] != null) {
@@ -71,6 +91,10 @@ public class ReflectorMap<K, V>{
         return false;
     }
 
+    /**
+     * Displays all stored keys and values in a StringBuilder object.
+     * @return the StringBuilder object as a string.
+     */
     public String display() {
         StringBuilder sb = new StringBuilder();
         int bound = capacity;
@@ -91,15 +115,32 @@ public class ReflectorMap<K, V>{
         return sb.toString();
     }
 
+    /**
+     * This generates a new hash code for the map based on the key received,
+     * and the capacity of the hashmap.
+     * @param key The key to be hashed
+     * @return The hashed key.
+     */
     private int hash(K key) {
         return Math.abs(key.hashCode()) % capacity;
     }
 
+    /**
+     * A container class which holds physical representations of the entries of the hashmap.
+     * @param <K> A key type object. Can be any non abstract element.
+     * @param <V> A value to return. Can be just about any type of non abstract element.
+     */
     static class Entry<K, V> {
         K key;
         V value;
         Entry<K, V> next;
 
+        /**
+         * A new instance of the HashMap entry
+         * @param key The new entry key to add.
+         * @param value The new value to add.
+         * @param next The next entry (queued)
+         */
         public Entry(K key, V value, Entry<K, V> next) {
             this.key = key;
             this.value = value;

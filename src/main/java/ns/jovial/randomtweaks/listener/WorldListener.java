@@ -47,6 +47,7 @@ public class WorldListener implements Listener {
         }
     }
 
+    @EventHandler
     public void EggEvent(PlayerEggThrowEvent event) {
         if (enabled) {
             Egg egg  = event.getEgg();

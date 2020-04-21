@@ -34,7 +34,13 @@ public class CommandLoader {
            if (existing != null) {
                unregisterCommand(existing, map);
            }
-           map.register(RandomTweaks.plugin.getDescription().getName(), dynamic);
+           try {
+               RandomTweaks.reflect.getPlugins().forEach(plug -> {
+                   map.register(plug.getDescription().getName(), dynamic);
+               });
+           } catch (Exception ex) {
+               map.register(RandomTweaks.plugin.getDescription().getName(), dynamic);
+           }
         });
         Bukkit.getLogger().info("Successfully loaded all commands!");
     }
