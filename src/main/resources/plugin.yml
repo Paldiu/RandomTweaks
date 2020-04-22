@@ -1,0 +1,5 @@
+name: RandomTweaks
+main: ns.jovial.randomtweaks.RandomTweaks
+description: A simple Library / API for Spigot/PaperMC Plugins.
+version: 1.0.0-SNAPSHOT
+authors: [Dr_Coomer, smack17]

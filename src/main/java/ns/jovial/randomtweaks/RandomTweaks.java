@@ -1,11 +1,13 @@
 package ns.jovial.randomtweaks;
 
+import java.io.File;
 import java.util.List;
 import java.util.logging.Level;
 
 import ns.jovial.randomtweaks.commands.RTweaks;
 import ns.jovial.randomtweaks.commands.handling.CommandHandler;
 import ns.jovial.randomtweaks.commands.handling.CommandLoader;
+import ns.jovial.randomtweaks.config.RTConfig;
 import ns.jovial.randomtweaks.listener.PlayerListener;
 import ns.jovial.randomtweaks.listener.WorldListener;
 import ns.jovial.randomtweaks.reflect.Reflector;
@@ -31,27 +33,34 @@ public class RandomTweaks extends JavaPlugin {
     //
     public static WorldListener wl;
     public static PlayerListener pl;
+    //
+    public static RTConfig config;
 
     @Override
     public void onLoad() {
-        // Basic Loading
+        // ======================== Basic Loading ======================== \\
         plugin = this;
         server = plugin.getServer();
         pluginName = this.getName();
         pluginVersion = this.getDescription().getVersion();
-        // Timer
+        // ======================== Timer ======================== \\
         timer = new Timer();
-        // Reflector
+        // ======================== Reflector ======================== \\
         reflect = new Reflector(RTweaks.class);
     }
     
     @Override
     public void onEnable() {
+        // ======================== Listeners ======================== \\
         wl = new WorldListener(this);
         pl = new PlayerListener(this);
 
-        new RecurringTask(plugin).runTaskTimer(plugin, timer.clean(), timer.clean());
+        // ======================== CONFIG ======================== \\
+        config = new RTConfig(this);
+        config.load();
 
+        // ======================== Scheduled Tasks ======================== \\
+        new RecurringTask(plugin).runTaskTimer(plugin, timer.clean(), timer.clean());
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -59,6 +68,7 @@ public class RandomTweaks extends JavaPlugin {
             }
         }.runTaskLater(plugin, timer.second());
 
+        // ======================== Logger! ======================== \\
         Bukkit.getLogger().log(Level.INFO,
                 String.format("[%s] v%s by the Jovial Development Group has been enabled!",
                 pluginName, pluginVersion));
@@ -66,7 +76,9 @@ public class RandomTweaks extends JavaPlugin {
     
     @Override
     public void onDisable() {
+        // ======================== De-initialization ======================== \\
         server.getScheduler().cancelTasks(plugin);
+        config.save();
         plugin = null;
     }
 

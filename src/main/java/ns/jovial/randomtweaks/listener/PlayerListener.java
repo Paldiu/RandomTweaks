@@ -7,14 +7,4 @@ public class PlayerListener implements Listener {
     public PlayerListener(Plugin plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
-
-    private boolean enabled = false;
-
-    public void setEnabled(boolean enable) {
-        enabled = enable;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
 }

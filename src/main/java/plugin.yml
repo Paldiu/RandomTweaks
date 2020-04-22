@@ -1,5 +1,0 @@
-name: RandomTweaks
-version: 1.0-SNAPSHOT
-description: Random tweaks to the game to make it more interesting.
-author: Paldiu
-main: ns.jovial.randomtweaks.RandomTweaks

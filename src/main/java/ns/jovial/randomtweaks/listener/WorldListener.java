@@ -19,37 +19,24 @@ import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
+import java.util.List;
 import java.util.Random;
 
 public class WorldListener implements Listener {
-    //Using generic plugin types in the constructor to let you implement these listeners in your plugin.
     public WorldListener(Plugin plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    // Private boolean
-    private boolean enabled = false;
-
-    // Setter
-    public void setEnabled(boolean enable) {
-        enabled = enable;
-    }
-
-    // Getter
-    public boolean isEnabled() {
-        return enabled;
-    }
-
     @EventHandler
     public void SheepEvent(SheepRegrowWoolEvent event) {
-        if (enabled) {
+        if (RandomTweaks.config.getBoolean("world_listener.sheep_event")) {
 
         }
     }
 
     @EventHandler
     public void EggEvent(PlayerEggThrowEvent event) {
-        if (enabled) {
+        if (RandomTweaks.config.getBoolean("world_listener.egg_event")) {
             Egg egg  = event.getEgg();
             Player player = event.getPlayer();
             World world = player.getWorld();
