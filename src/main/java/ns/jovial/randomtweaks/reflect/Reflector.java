@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.reflections.Reflections;
 
+import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.*;
@@ -21,6 +22,11 @@ public class Reflector {
      * This constructor prepares our reflector for the numerous defined methods.
      * The reflector should be limited to one single instance.
      * This WILL run on the main server thread.
+     * This is mainly used for the Command Handler.
+     * When registering commands, create a new instance of this using a command class
+     * which is defined in its own folder.
+     * PLEASE DO THIS IN YOUR MAIN CLASS!
+     *
      * @param clazz -> The class in which to call the reflections from.
      */
     public Reflector(Class<?> clazz) {
@@ -33,6 +39,7 @@ public class Reflector {
                 plugins.add(plug);
             }
         }
+        plugins.add(RandomTweaks.plugin);
         synchronized(mutationLock) {
             reflections = new Reflections(clazz.getPackage().getName());
         }
@@ -116,5 +123,23 @@ public class Reflector {
                 && ((clazz = clazz.getSuperclass()) != null));
 
         return null;
+    }
+
+    /**
+     * @return the native minecraft version.
+     */
+    public String getNMSVersion() {
+        String packageName = Bukkit.getServer().getClass().getPackage().getName();
+        return packageName.substring(packageName.lastIndexOf('.') + 1);
+    }
+
+    /**
+     * Gets a file from the plugin.
+     * @param plugin The plugin to call from
+     * @param name The name of the file.
+     * @return The plugin file.
+     */
+    public File getPluginFile(Plugin plugin, String name) {
+        return new File(plugin.getDataFolder(), name);
     }
 }

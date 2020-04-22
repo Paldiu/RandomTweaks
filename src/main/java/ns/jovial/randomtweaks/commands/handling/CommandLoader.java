@@ -11,12 +11,16 @@ import java.util.*;
 public class CommandLoader {
     private final List<Commander> commandList;
 
+    /**
+     * Create a new instance. Only accessed through the instance holder.
+     */
     private CommandLoader() {
         commandList = new ArrayList<>();
     }
 
     /**
-     *
+     * Scans Spigots' provided command map for any commands which match commands provided by this plugin
+     * Then forces this plugin to take control. This also registers our commands with the command map.
      */
     @SuppressWarnings("unchecked")
     public void scan() {
@@ -46,8 +50,8 @@ public class CommandLoader {
     }
 
     /**
-     *
-     * @param commandName
+     * This unregisters a command from the server command map based on the name of the command.
+     * @param commandName The command to remove from the Command Map.
      */
     public void unregisterCommand(String commandName) {
         CommandMap map = getCommandMap();
@@ -60,9 +64,9 @@ public class CommandLoader {
     }
 
     /**
-     *
-     * @param command
-     * @param commandMap
+     * Unregisters a command with the actual Command instance, in relation to the supplied command map.
+     * @param command The command to be unregistered (specific instance)
+     * @param commandMap The command map to access (which should contain the Command instance).
      */
     public void unregisterCommand(Command command, CommandMap commandMap) {
         try {
@@ -78,8 +82,8 @@ public class CommandLoader {
     }
 
     /**
-     *
-     * @return
+     * Gets the server command map.
+     * @return The server's command map.
      */
     public CommandMap getCommandMap() {
         Object commandMap = RandomTweaks.reflect.getField(Bukkit.getServer().getPluginManager(), "commandMap");
@@ -92,8 +96,9 @@ public class CommandLoader {
     }
 
     /**
-     *
-     * @return
+     * Gets all commands which have been annotated with CommandParameters.class
+     * These commands should be listed in their own folder, and all should extend CommandBase
+     * @return A new list containing new commander instances, which holds all the information for each command.
      */
     private List<? extends Commander> getCommands() {
         List<Commander> commanderList = new ArrayList<>();
@@ -112,6 +117,11 @@ public class CommandLoader {
         return commanderList;
     }
 
+    /**
+     * A method to retrieve all the commands that are already registered with the provided command map.
+     * @param commandMap The command map to check
+     * @return A new map containing all commands that have already been registered.
+     */
     @SuppressWarnings("unchecked")
     public Map<String, Command> getKnownCommands(CommandMap commandMap) {
         Object knownCommands = RandomTweaks.reflect.getField(commandMap, "knownCommands");
@@ -123,10 +133,17 @@ public class CommandLoader {
         return null;
     }
 
+    /**
+     * This ensures there is only ever one instance of the Command Loader, provided by the command loader.
+     * @return This
+     */
     public static CommandLoader getInstance() {
         return InstanceHolder.INSTANCE;
     }
 
+    /**
+     * Simple instance holder to ensure continuity.
+     */
     private static class InstanceHolder {
         private static final CommandLoader INSTANCE = new CommandLoader();
     }
