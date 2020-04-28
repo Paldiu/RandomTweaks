@@ -8,12 +8,12 @@ public class Timer {
 
     public Timer() {
         ONE_SECOND = 20L;
-        ONE_MINUTE = ONE_SECOND * 60L;
-        ONE_HOUR = ONE_MINUTE * 60L;
-        AUTO_ITEM_CLEAN = ONE_MINUTE * 10L; // 10 Minutes
+        ONE_MINUTE = ONE_SECOND * 60;
+        ONE_HOUR = ONE_MINUTE * 60;
+        AUTO_ITEM_CLEAN = ONE_MINUTE * 10; // 10 Minutes
     }
 
-    public Timer(long second, long minute, long hour) {
+    public Timer(long second, int minute, int hour) {
         ONE_SECOND = second;
         ONE_MINUTE = ONE_SECOND * minute;
         ONE_HOUR = ONE_MINUTE * hour;
@@ -21,7 +21,7 @@ public class Timer {
     }
 
     public Long currentTime() {
-        return System.currentTimeMillis();
+        return new DateParser().getUnixTime();
     }
 
     public Long second() {

@@ -1,18 +1,22 @@
 package ns.jovial.randomtweaks.listener;
 
 import org.bukkit.block.Block;
-import org.bukkit.entity.Creature;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Animals;
-import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.ThrowableProjectile;
+import org.bukkit.entity.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public final class SupportedEntities {
+
+    public static Map<String, EntityType> getAllEntities() {
+        Map<String, EntityType> typeMap = new HashMap<>();
+        typeMap.putAll(getBoats());
+        typeMap.putAll(getMinecarts());
+        typeMap.putAll(getAllProjectiles());
+        typeMap.putAll(getItems());
+        typeMap.putAll(getCreatures());
+        return typeMap;
+    }
 
     public static Map<String, EntityType> getFallingBlocks() {
         Map<String, EntityType> typeMap = new HashMap<>();
@@ -111,6 +115,34 @@ public final class SupportedEntities {
             try {
                 if (type.name() != null) {
                     if (Creature.class.isAssignableFrom(type.getEntityClass())) {
+                        typeMap.put(type.name().toLowerCase(), type);
+                    }
+                }
+            } catch (Exception ignored) { }
+        }
+        return typeMap;
+    }
+
+    public static Map<String, EntityType> getMinecarts() {
+        Map<String, EntityType> typeMap = new HashMap<>();
+        for (EntityType type : EntityType.values()) {
+            try {
+                if (type.name() != null) {
+                    if (Minecart.class.isAssignableFrom(type.getEntityClass())) {
+                        typeMap.put(type.name().toLowerCase(), type);
+                    }
+                }
+            } catch (Exception ignored) { }
+        }
+        return typeMap;
+    }
+
+    public static Map<String, EntityType> getBoats() {
+        Map<String, EntityType> typeMap = new HashMap<>();
+        for (EntityType type : EntityType.values()) {
+            try {
+                if (type.name() != null) {
+                    if (Boat.class.isAssignableFrom(type.getEntityClass())) {
                         typeMap.put(type.name().toLowerCase(), type);
                     }
                 }

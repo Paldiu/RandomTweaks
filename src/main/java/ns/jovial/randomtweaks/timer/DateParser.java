@@ -9,24 +9,50 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DateParser {
+
     private final String DATE_STORAGE_FORMAT;
 
+    /**
+     * Constructor. Friendly date storage for Spigot.
+     */
     public DateParser() {
         DATE_STORAGE_FORMAT = "EEE, d MMM yyyy HH:mm:ss Z";
     }
 
+    /**
+     * Converts supplied date object to a String.
+     * @param date A date object to convert.
+     * @return A read friendly String containing the date, utilizing the DSF we detailed in the constructor.
+     */
     public String dateToString(Date date) {
         return new SimpleDateFormat(DATE_STORAGE_FORMAT, Locale.ENGLISH).format(date);
     }
 
+    /**
+     * Gets the current unix time. Current system time in milliseconds,
+     * System#currentTimeMillis() / 1000L converts the number to seconds.
+     *
+     * @return UNIX Epoch Second (current time in seconds since 01 JAN 1970)
+     */
     public long getUnixTime() {
         return System.currentTimeMillis() / 1000L;
     }
 
+    /**
+     * Gets a new Date object created from UNIX time.
+     *
+     * @param unix The UNIX time (in seconds)
+     * @return New date object created from UNIX Time.
+     */
     public Date getUnixDate(long unix) {
         return new Date(unix * 1000);
     }
 
+    /**
+     *
+     * @param date
+     * @return
+     */
     public long getUnixTime(Date date) {
         if (date == null) {
             return 0;
@@ -35,6 +61,11 @@ public class DateParser {
         return date.getTime() / 1000L;
     }
 
+    /**
+     *
+     * @param time
+     * @return
+     */
     public Date parseDateOffset(String time) {
         Pattern timePattern = Pattern.compile("(?:([0-9]+)\\s*y[a-z]*[,\\s]*)?"
                 + "(?:([0-9]+)\\s*mo[a-z]*[,\\s]*)?"

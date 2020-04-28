@@ -1,4 +1,4 @@
-package ns.jovial.randomtweaks;
+package ns.jovial.randomtweaks.tweaks;
 
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.ChatColor;

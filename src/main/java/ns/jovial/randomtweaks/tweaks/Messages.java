@@ -1,4 +1,4 @@
-package net.novelmc.commands.loader;
+package ns.jovial.randomtweaks.tweaks;
 
 import org.bukkit.ChatColor;
 

@@ -1,4 +1,4 @@
-package ns.jovial.randomtweaks;
+package ns.jovial.randomtweaks.tweaks;
 
 import java.util.*;
 import org.bukkit.Bukkit;

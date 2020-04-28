@@ -2,12 +2,10 @@
 # Your file may look different depending on what version you are running! #
 
 # ======================== Listeners ======================== #
-# Each listed listener is a configuration section which holds boolean values for each listener event.
+# Each listed listener is a configuration section which holds boolean values for each listener event. #
 world_listener:
   egg_event: true
   sheep_event: true
 
 
 player_listener:
-
-
