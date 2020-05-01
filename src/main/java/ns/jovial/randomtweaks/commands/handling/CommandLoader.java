@@ -5,6 +5,7 @@ import ns.jovial.randomtweaks.reflect.ReflectorList;
 import ns.jovial.randomtweaks.reflect.ReflectorMap;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
+import org.bukkit.plugin.Plugin;
 
 import java.util.*;
 
@@ -25,6 +26,7 @@ public class CommandLoader {
     @SuppressWarnings("unchecked")
     public void scan() {
         CommandMap map = getCommandMap();
+        Plugin plug = RandomTweaks.reflect.getPlugin();
         if (map == null) {
             Bukkit.getLogger().severe("Error loading command map!");
             return;
@@ -36,15 +38,14 @@ public class CommandLoader {
            Dynamic dynamic = new Dynamic(command);
            Command existing = map.getCommand(dynamic.getName());
            if (existing != null) {
+               dynamic.getAliases().forEach(alias -> {
+                  if (existing.getAliases().contains(alias)) {
+                      existing.setAliases(new ArrayList<>());
+                  }
+               });
                unregisterCommand(existing, map);
            }
-           try {
-               RandomTweaks.reflect.getPlugins().forEach(plug -> {
-                   map.register(plug.getDescription().getName(), dynamic);
-               });
-           } catch (Exception ex) {
-               map.register(RandomTweaks.plugin.getDescription().getName(), dynamic);
-           }
+           map.register(plug.getDescription().getName(), dynamic);
         });
         Bukkit.getLogger().info("Successfully loaded all commands!");
     }

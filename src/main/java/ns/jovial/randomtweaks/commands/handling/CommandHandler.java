@@ -1,6 +1,5 @@
 package ns.jovial.randomtweaks.commands.handling;
 
-import ns.jovial.randomtweaks.RandomTweaks;
 import ns.jovial.randomtweaks.reflect.Reflector;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
@@ -8,7 +7,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,14 +21,13 @@ public class CommandHandler {
      * and have it return CommandHandler#handle().
      *
      * @param reflect The reflector instance. This should be initialized in your main class.
-     * @param plugin The plugin which has the commands to register, aka your main plugin instance.
      * @param sender The command sender (Console, CommandBlock, or Player)
      * @param cmd The actual executable command instance.
      * @param lbl The name of the command (/<command>)
      * @param args Any variable arguments that could also be provided after the command label.
      * @return true if the command successfully completed, false if it did not.
      */
-    public static boolean handle(Reflector reflect, Plugin plugin, CommandSender sender, Command cmd, String lbl, String[] args) {
+    public static boolean handle(Reflector reflect, CommandSender sender, Command cmd, String lbl, String[] args) {
         if (sender instanceof Player) {
             final Player player = (Player) sender;
             Bukkit.getLogger().info(String.format("[PLAYER COMMAND] %s (%s): /%s %s",
@@ -48,7 +45,7 @@ public class CommandHandler {
         try {
             final ClassLoader loader = reflect.getDefClass().getClassLoader();
             base = (CommandBase) loader.loadClass( reflect.getDefPackage().getName() + "." + cmd.getName()).newInstance();
-            base.setup(plugin, sender, base.getClass());
+            base.setup(reflect.getPlugin(), sender, base.getClass());
         } catch (Exception ex) {
             Bukkit.getLogger().severe("Could not load command: " + cmd.getName());
             Bukkit.getLogger().severe(ex.getMessage());
@@ -72,7 +69,6 @@ public class CommandHandler {
      * This must be completed with the onCommand method from BaseCommand.class when creating new commands.
      *
      * @param reflect The reflector instance. This should be initialized in your main class.
-     * @param plugin The plugin which has the commands to register, aka your main plugin instance.
      * @param sender The command sender (Console, CommandBlock, or Player)
      * @param cmd The actual executable command instance.
      * @param lbl The name of the command (/<command>).
@@ -80,12 +76,12 @@ public class CommandHandler {
      * @return A new instance of a List<Object> containing the different possible arguments for each command.
      */
     public @Nullable
-    static List<String> onTabComplete(@NotNull Reflector reflect, @NotNull Plugin plugin, @NotNull CommandSender sender, @NotNull Command cmd, @NotNull String lbl, @NotNull String[] args) {
+    static List<String> onTabComplete(@NotNull Reflector reflect, @NotNull CommandSender sender, @NotNull Command cmd, @NotNull String lbl, @NotNull String[] args) {
         final CommandBase base;
         try {
             final ClassLoader loader = reflect.getDefClass().getClassLoader();
             base = (CommandBase) loader.loadClass(reflect.getDefPackage().getName() + "." + cmd.getName()).newInstance();
-            base.setup(plugin, sender, base.getClass());
+            base.setup(reflect.getPlugin(), sender, base.getClass());
         } catch (Exception ex) {
             return null;
         }

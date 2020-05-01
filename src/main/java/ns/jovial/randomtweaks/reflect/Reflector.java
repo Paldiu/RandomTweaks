@@ -3,6 +3,7 @@ package ns.jovial.randomtweaks.reflect;
 import ns.jovial.randomtweaks.RandomTweaks;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
 
 import java.io.File;
@@ -69,6 +70,15 @@ public class Reflector {
      */
     public Plugin getDepend(int index) throws IndexOutOfBoundsException {
         return plugins.get(index);
+    }
+
+    /**
+     * Gets the plugin related to the reflector instance.
+     * This is how the command handler will register your commands.
+     * @return The providing JavaPlugin as an instance of Plugin.
+     */
+    public Plugin getPlugin() {
+        return JavaPlugin.getProvidingPlugin(cls);
     }
 
     /**
