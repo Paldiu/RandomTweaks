@@ -45,7 +45,7 @@ public class Reflector {
             reflections = new Reflections(clazz.getPackage().getName());
         }
     }
-
+    
     /**
      * A basic reflection getter
      * @return A reflective interface

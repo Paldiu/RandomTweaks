@@ -1,6 +1,5 @@
 package ns.jovial.randomtweaks;
 
-import java.io.File;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -84,11 +83,11 @@ public class RandomTweaks extends JavaPlugin {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        return CommandHandler.handle(reflect, plugin, sender, command, label, args);
+        return CommandHandler.handle(reflect, sender, command, label, args);
     }
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
-        return CommandHandler.onTabComplete(reflect, plugin, sender, command, alias, args);
+        return CommandHandler.onTabComplete(reflect, sender, command, alias, args);
     }
 }
