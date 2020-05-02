@@ -1,5 +1,7 @@
 package ns.jovial.randomtweaks.commands.handling;
 
+import ns.jovial.randomtweaks.exception.PlayerNotFoundException;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -65,8 +67,9 @@ public abstract class CommandBase {
      *
      * @param partial The partial player name. Useful for executing commands, really.
      * @return The player from the provided string.
+     * @throws PlayerNotFoundException If there is no such player.
      */
-    public Player getPlayer(final String partial) {
+    public Player getPlayer(final String partial) throws PlayerNotFoundException {
         List<Player> matcher = server.matchPlayer(partial);
         if (matcher.isEmpty()) {
             for (Player p : server.getOnlinePlayers()) {
@@ -74,9 +77,25 @@ public abstract class CommandBase {
                     return p;
                 }
             }
-            return null;
+            throw new PlayerNotFoundException();
         } else {
             return matcher.get(0);
         }
+    }
+
+    /**
+     * Gets an offline player based on a partial name.
+     * Basically does the same this as above except you cannot use Server#matchPlayer() here.
+     * @param partial The offline players partial name.
+     * @return An offline player.
+     * @throws PlayerNotFoundException If there is no offline player to be found.
+     */
+    public OfflinePlayer getOfflinePlayer(final String partial) throws PlayerNotFoundException {
+        for (OfflinePlayer player : server.getOfflinePlayers()) {
+            if (player.getName().toLowerCase().contains(partial.toLowerCase())) {
+                return player;
+            }
+        }
+        throw new PlayerNotFoundException();
     }
 }

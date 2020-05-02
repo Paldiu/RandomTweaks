@@ -36,47 +36,6 @@ public class RTweaks extends CommandBase {
             sb.append("&eThis plugin otherwise is simply a Library/API, and should be treated as such.\n");
             sb.append("Info on this plugin can be obtained by joining the discord: https://discord.gg/cdJhSVT");
             sender.sendMessage(colorize(sb.toString()));
-        } else if (args.length == 2) {
-            switch (args[0]) {
-                case "world":
-                    switch (args[1]) {
-                        case "on":
-                            if (RandomTweaks.wl.isEnabled()) {
-                                sender.sendMessage("That is already enabled!");
-                                return true;
-                            }
-                            RandomTweaks.wl.setEnabled(true);
-                           break;
-                        case "off":
-                            if (RandomTweaks.wl.isEnabled()) {
-                                sender.sendMessage("That is already disabled!");
-                                return true;
-                            }
-                            RandomTweaks.wl.setEnabled(false);
-                            break;
-                    }
-                    break;
-                case "player":
-                    switch (args[1]) {
-                        case "on":
-                            if (RandomTweaks.pl.isEnabled()) {
-                                sender.sendMessage("That is already enabled!");
-                                return true;
-                            }
-                            RandomTweaks.pl.setEnabled(true);
-                            break;
-                        case "off":
-                            if (!RandomTweaks.pl.isEnabled()) {
-                                sender.sendMessage("That is already disabled!");
-                                return true;
-                            }
-                            RandomTweaks.pl.setEnabled(false);
-                            break;
-                    }
-                    break;
-            }
-        } else {
-            return false;
         }
 
         return true;
